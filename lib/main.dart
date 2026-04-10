@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:technewsapp/components/searchbox.dart';
-import 'package:technewsapp/pages/home.dart';
 import 'package:technewsapp/utils/colors.dart';
 
 void main() {
