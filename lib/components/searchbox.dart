@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:technewsapp/backend/functions.dart';
 import 'package:technewsapp/utils/colors.dart';
 
 class Searchbox extends StatefulWidget {
   const Searchbox({super.key});
-  static TextEditingController searchController = TextEditingController(
-    text: '',
-  );
 
   @override
   State<Searchbox> createState() => _SearchboxState();
 }
 
 class _SearchboxState extends State<Searchbox> {
+  final TextEditingController searchController = TextEditingController(
+    text: '',
+  );
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -28,31 +35,47 @@ class _SearchboxState extends State<Searchbox> {
               color: AppColors.darkgrey,
               borderRadius: BorderRadius.circular(50),
             ),
-            child: Center(
-              child: Material(
-                color: Colors.transparent,
-                child: TextField(
-                  controller: Searchbox.searchController,
-                  decoration: InputDecoration(
-                    hintText: 'Search a keyword or a phrase',
-                    border: InputBorder.none,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(width: 10),
+                Expanded(
+                  child: Material(
+                    color: Colors.transparent,
+                    child: TextField(
+                      controller: searchController,
+                      decoration: InputDecoration(
+                        hintText: 'Search a keyword or a phrase',
+
+                        border: InputBorder.none,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
         ),
 
-        Expanded(
-          child: Container(
-            height: 45,
-            width: 45,
-            decoration: BoxDecoration(
-              color: AppColors.darkgrey,
+        Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+              String query = searchController.text;
+              fetchNews(query);
+            },
+            child: Container(
+              height: 45,
+              width: 45,
+              decoration: BoxDecoration(
+                color: AppColors.darkgrey,
 
-              shape: BoxShape.circle,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(Icons.search),
             ),
-            child: Icon(Icons.search),
           ),
         ),
       ],
