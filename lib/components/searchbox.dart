@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:technewsapp/backend/functions.dart';
 import 'package:technewsapp/utils/colors.dart';
 
 class Searchbox extends StatefulWidget {
-  const Searchbox({super.key});
+  final Function(String)? onSearch;
+  const Searchbox({super.key, this.onSearch});
 
   @override
   State<Searchbox> createState() => _SearchboxState();
@@ -64,7 +64,9 @@ class _SearchboxState extends State<Searchbox> {
             onTap: () {
               FocusScope.of(context).unfocus();
               String query = searchController.text;
-              fetchNews(query);
+
+              // fetchNews(query);
+              widget.onSearch?.call(query);
             },
             child: Container(
               height: 45,

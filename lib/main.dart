@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:technewsapp/components/searchbox.dart';
+import 'package:technewsapp/pages/home.dart';
 import 'package:technewsapp/utils/colors.dart';
 
 void main() {
@@ -12,8 +12,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Searchbox(),
-      debugShowCheckedModeBanner: false,
+      home: Home(),
+      debugShowCheckedModeBanner: false, 
       theme: ThemeData(
         primaryColor: AppColors.primary,
         brightness: .dark
