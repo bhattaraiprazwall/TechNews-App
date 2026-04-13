@@ -10,9 +10,7 @@ class Searchbox extends StatefulWidget {
 }
 
 class _SearchboxState extends State<Searchbox> {
-  final TextEditingController searchController = TextEditingController(
-    text: '',
-  );
+  final TextEditingController searchController = TextEditingController();
 
   @override
   void dispose() {
@@ -29,7 +27,6 @@ class _SearchboxState extends State<Searchbox> {
           child: Container(
             width: MediaQuery.of(context).size.width * 0.8,
             padding: EdgeInsets.all(10),
-            // margin: EdgeInsets.all(10),
             height: 50,
             decoration: BoxDecoration(
               color: AppColors.darkgrey,
@@ -47,7 +44,6 @@ class _SearchboxState extends State<Searchbox> {
                       controller: searchController,
                       decoration: InputDecoration(
                         hintText: 'Search a keyword or a phrase',
-
                         border: InputBorder.none,
                       ),
                     ),
@@ -63,11 +59,7 @@ class _SearchboxState extends State<Searchbox> {
           child: InkWell(
             onTap: () {
               FocusScope.of(context).unfocus();
-              String query = searchController.text.trim();
-              if(query.isEmpty) return;
-
-              // fetchNews(query);
-              widget.onSearch?.call(query);
+              widget.onSearch?.call(searchController.text);
             },
             child: Container(
               height: 45,

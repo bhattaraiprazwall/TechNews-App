@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false, 
       theme: ThemeData(
         primaryColor: AppColors.primary,
-        brightness: .dark
+        brightness: Brightness.dark
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:technewsapp/components/components.dart';
 import 'package:technewsapp/utils/text.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 void showMyBottomSheet(
@@ -15,7 +16,7 @@ void showMyBottomSheet(
   showBottomSheet(
     backgroundColor: Colors.black,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadiusGeometry.only(
+      borderRadius: BorderRadius.only(
         topLeft: Radius.circular(20),
         topRight: Radius.circular(20),
       ),
@@ -34,10 +35,17 @@ void showMyBottomSheet(
   );
 }
 
-_launchUrl(String url) async {
-  if (await canLaunchUrlString(url)) {
-    await launchUrlString(url);
-  } else {
+// _launchUrl(String url) async {
+//   if (await canLaunchUrlString(url)) {
+//     await launchUrlString(url);
+//   } else {
+//     throw 'Couldn\'t launch url';
+//   }
+// }
+
+Future<void> _launchUrl(String url) async {
+  final Uri uri = Uri.parse(url);
+  if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
     throw 'Couldn\'t launch url';
   }
 }
@@ -57,12 +65,12 @@ class MyBottomSheetLayout extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
-          topLeft: .circular(20),
-          topRight: .circular(20),
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
         ),
       ),
       child: Column(
-        crossAxisAlignment: .start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           BottomSheetImage(imageUrl: imageUrl, title: title),
@@ -83,6 +91,8 @@ class MyBottomSheetLayout extends StatelessWidget {
                     text: 'Read Full Article',
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
+                        print('Button clicked');
+                        print('url$url');
                         _launchUrl(url);
                       },
                     style: GoogleFonts.lato(color: Colors.blue.shade400),

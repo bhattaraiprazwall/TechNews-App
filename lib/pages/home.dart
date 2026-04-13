@@ -14,21 +14,30 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   List articles = [];
   bool isLoading = false;
+  String currentQuery = '';
 
   Future<void> handleSearch(String query) async {
-    print("//////////////SEARCH CALLED:////////////// $query"); //
-
+    // print("//////////////SEARCH CALLED:////////////// $query"); //
     setState(() {
       isLoading = true;
+      currentQuery = query;
     });
 
     final data = await fetchNews(query);
-    print("//////////////////DATA LENGTH///////////: ${data.length}"); // 👈 add this
+    // print(
+    //   "//////////////////DATA LENGTH///////////: ${data.length}",
+    // );
 
     setState(() {
       articles = data;
       isLoading = false;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    handleSearch('');
   }
 
   @override
@@ -44,7 +53,7 @@ class _HomeState extends State<Home> {
           Expanded(
             child: isLoading
                 // 3. Show spinner while fetching
-                ? Center(child: CircularProgressIndicator())
+                ? Center(child: CircularProgressIndicator.adaptive())
                 // 4. Show message if no articles yet
                 : articles.isEmpty
                 ? Center(child: Text('Search for something to read !'))
@@ -56,13 +65,13 @@ class _HomeState extends State<Home> {
                       itemBuilder: (context, index) {
                         final article = articles[index];
 
-                        final url = article['url'];
+                        final url = article['link'] ?? '';
                         final imageUrl =
-                            article['urlToImage'] ?? Constants.imageUrl;
+                            article['image_url'] ?? Constants.imageUrl;
                         final title = article['title'];
                         final description =
                             article['description']?.toString() ?? '';
-                        final time = article['publishedAt'];
+                        final time = article['publishedAt'] ?? '';
 
                         return Newsbox(
                           imageUrl: imageUrl,
