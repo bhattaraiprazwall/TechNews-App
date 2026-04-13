@@ -16,11 +16,14 @@ class _HomeState extends State<Home> {
   bool isLoading = false;
 
   Future<void> handleSearch(String query) async {
+    print("//////////////SEARCH CALLED:////////////// $query"); //
+
     setState(() {
       isLoading = true;
     });
 
     final data = await fetchNews(query);
+    print("//////////////////DATA LENGTH///////////: ${data.length}"); // 👈 add this
 
     setState(() {
       articles = data;
@@ -46,28 +49,31 @@ class _HomeState extends State<Home> {
                 : articles.isEmpty
                 ? Center(child: Text('Search for something to read !'))
                 // 5. Show the list of articles
-                : Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: FutureBuilder<List>(future: fetchNews(query), builder: (context, snapshot) {
-                    if(snapshot.hasData)
-                    {
-                      return ListView.builder(itemCount: snapshot.data!.length,itemBuilder:(context, index) {
-                        final url=snapshot.data![index]['url'];
-                        final imageUrl=snapshot.data![index]['urlToImage'] ?? Constants.imageUrl;
-                        final title=snapshot.data![index]['title'];
-                        final description =snapshot.data![index]['description'].toString();
-                        final time =snapshot.data![index]['publisedAt'];
-                        return Newsbox(imageUrl: imageUrl, title: title, time: time, description: description, url: url);
+                : SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: ListView.builder(
+                      itemCount: articles.length,
+                      itemBuilder: (context, index) {
+                        final article = articles[index];
 
-                        
-                      }, );
-                    }
-                    else if(snapshot.hasError)
-                    {
-                      return Text("${snapshot.error}");
-                    }
-                  },),
-                )
+                        final url = article['url'];
+                        final imageUrl =
+                            article['urlToImage'] ?? Constants.imageUrl;
+                        final title = article['title'];
+                        final description =
+                            article['description']?.toString() ?? '';
+                        final time = article['publishedAt'];
+
+                        return Newsbox(
+                          imageUrl: imageUrl,
+                          title: title,
+                          time: time,
+                          description: description,
+                          url: url,
+                        );
+                      },
+                    ),
+                  ),
           ),
         ],
       ),

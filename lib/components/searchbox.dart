@@ -63,7 +63,8 @@ class _SearchboxState extends State<Searchbox> {
           child: InkWell(
             onTap: () {
               FocusScope.of(context).unfocus();
-              String query = searchController.text;
+              String query = searchController.text.trim();
+              if(query.isEmpty) return;
 
               // fetchNews(query);
               widget.onSearch?.call(query);

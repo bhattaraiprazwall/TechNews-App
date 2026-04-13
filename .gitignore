@@ -45,4 +45,4 @@ app.*.map.json
 /android/app/release
 
 # Sensitive files
-lib/utils/key.dart
+lib/utils/key.dartew
